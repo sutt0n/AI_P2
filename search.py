@@ -6,7 +6,6 @@ functions."""
 
 from utils import *
 import math, random, sys, time, bisect, string
-abstract = ""
 
 #______________________________________________________________________________
 
