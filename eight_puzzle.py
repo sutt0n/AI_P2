@@ -13,7 +13,11 @@ import copy
 # |   |   |   |
 # | 7 | 8 |   |
 # |___|___|___|
-solutionState = [ [1,2,3], [4,5,6], [7,8,0] ]
+
+# We decided to represent states as nested tuples so that search algorithms
+# like A* could hash them - we previously used nested lists, but lists are
+# not mutable, and thus not usable as keys in hash tables.
+solutionState = ( (1,2,3), (4,5,6), (7,8,0) )
 
 # Define the position where each block is supposed to be on the board
 goalPositions = {
@@ -33,6 +37,13 @@ up = "up"
 down = "down"
 left = "left"
 right = "right"
+
+# Nested lists converted back to nested tuples (mutating states in result() function)
+def convertStateLtoT(myNestedList):
+    returnMe = []
+    for row in myNestedList:
+        returnMe.append(tuple(row))
+    return tuple(returnMe)
 
 class EightTileProblem(GraphProblem):
     def __init__(self, initialState, goalState, startNode):
@@ -102,22 +113,24 @@ class EightTileProblem(GraphProblem):
                     zCol = colNumber
                     break
                 
-        # Make a deep copy so as not to alter the original Node 
-        childState = copy.deepcopy(state)
+        # Make a deep copy, in list form, so as not to alter the original Node
+        childState = []
+        for row in state:
+            childState.append(list(row)) 
         
         if action == up:
             # this is how you execute a swap()
             childState[zRow][zCol], childState[zRow-1][zCol] = childState[zRow-1][zCol], childState[zRow][zCol]
-            return childState
+            return convertStateLtoT(childState)
         elif action == down:
             childState[zRow][zCol], childState[zRow+1][zCol] = childState[zRow+1][zCol], childState[zRow][zCol]
-            return childState
+            return convertStateLtoT(childState)
         elif action == left:
             childState[zRow][zCol], childState[zRow][zCol-1] = childState[zRow][zCol-1], childState[zRow][zCol]
-            return childState
+            return convertStateLtoT(childState)
         elif action == right:
             childState[zRow][zCol], childState[zRow][zCol+1] = childState[zRow][zCol+1], childState[zRow][zCol]
-            return childState
+            return convertStateLtoT(childState)
         else:
             return "Woops, invalid action"
         
@@ -129,7 +142,13 @@ class EightTileProblem(GraphProblem):
         """ TODO: Change to be purdy. """
         return "<Node %s>" % (self.state,)
 
-sInit = [[1,2,3],[0,5,6],[4,7,8]]
+
+# Main run-through of the program -- we declare an initial state, a start node
+# (whose state is the initial state we just made), and an EightTileProblem.
+# The eight tile problem accepts a start state, goal state, and initial graph,
+# which in this case is only one node which we just declared.
+sInit = ( (2,0,3), (1,5,6), (4,7,8) )
 nStart = Node(sInit) 
 gpEightTile = EightTileProblem(sInit, solutionState, nStart)
+#print astar_search(gpEightTile).solution()
 print breadth_first_tree_search(gpEightTile).solution()
