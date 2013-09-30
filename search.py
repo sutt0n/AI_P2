@@ -78,7 +78,7 @@ class Node:
         "List the nodes reachable in one step from this node."
 
 	if hasattr(problem, 'enableOutput') and problem.enableOutput == True:
-		print "Expanding node", self
+		print "Expanding node", problem.printNode( self )
 
         return [self.child_node(problem, action)
                 for action in problem.actions(self.state)]

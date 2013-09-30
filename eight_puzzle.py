@@ -39,7 +39,7 @@ left = "left"
 right = "right"
 
 # Output flag
-enableOutput = True
+enableOutput = False
 
 utils.enableOutput = enableOutput
 
@@ -150,6 +150,12 @@ class EightTileProblem(GraphProblem):
         """ TODO: Change to be purdy. """
 	if enableOutput:
 	        return "<Node %s>" % (self.state,)
+
+    def printNode( self, node ):
+	print ""
+	for row in node.state:
+		print row
+	return ""
 
 
 # Main run-through of the program -- we declare an initial state, a start node
