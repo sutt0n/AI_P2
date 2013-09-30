@@ -38,17 +38,29 @@ down = "down"
 left = "left"
 right = "right"
 
+# Output flag
+enableOutput = False
+
 # Nested lists converted back to nested tuples (mutating states in result() function)
 def convertStateLtoT(myNestedList):
     returnMe = []
     for row in myNestedList:
         returnMe.append(tuple(row))
-    return tuple(returnMe)
+
+    res = tuple( returnMe )
+
+    # Output state?
+    if enableOutput:
+        print res
+
+    return res
+
 
 class EightTileProblem(GraphProblem):
     def __init__(self, initialState, goalState, startNode):
         Problem.__init__(self, initialState, goalState)
         self.graph = startNode
+	self.enableOutput = enableOutput
         
     # Define the heuristic that will be used in the A* search 
     def h(self, node):
@@ -100,6 +112,7 @@ class EightTileProblem(GraphProblem):
             print result, " "
         print ""
         """
+
         return results
     
     # The result of swapping the 0-tile with another tile is a new state
@@ -140,7 +153,8 @@ class EightTileProblem(GraphProblem):
     
     def __repr__(self):
         """ TODO: Change to be purdy. """
-        return "<Node %s>" % (self.state,)
+	if enableOutput:
+	        return "<Node %s>" % (self.state,)
 
 
 # Main run-through of the program -- we declare an initial state, a start node
@@ -150,5 +164,15 @@ class EightTileProblem(GraphProblem):
 sInit = ( (2,0,3), (1,5,6), (4,7,8) )
 nStart = Node(sInit) 
 gpEightTile = EightTileProblem(sInit, solutionState, nStart)
+
+# A* works (as per 9/30/2013)
 #print astar_search(gpEightTile).solution()
-print breadth_first_tree_search(gpEightTile).solution()
+
+# Breadth First Search
+print "Breadth First Search:", breadth_first_tree_search( gpEightTile ).solution()
+
+# Depth Limited Search
+print "Depth Limited Search:", depth_limited_search( gpEightTile ).solution() # What should the limit be?
+
+# Iterative Deepening Search
+print "Iterative Deepening Search:", iterative_deepening_search( gpEightTile ).solution()
