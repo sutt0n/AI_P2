@@ -1,4 +1,6 @@
 from search import *
+import utils
+import copy
 
 #define our solution state
 # _____________
@@ -33,6 +35,10 @@ left = "left"
 right = "right"
 
 class EightTileProblem(GraphProblem):
+    def __init__(self, initialState, goalState, startNode):
+        Problem.__init__(self, initialState, goalState)
+        self.graph = startNode
+        
     # Define the heuristic that will be used in the A* search 
     def h(self, node):
         """h function for the current node is the sum of the Manhattan Distance
@@ -45,11 +51,11 @@ class EightTileProblem(GraphProblem):
         return sum
     
     # Define the actions we can take on the "0 tile" to swap it
-    def actions(self, A): # A is a node
+    def actions(self, A): # A is a state
         "The actions at a graph node are just its neighbors."
         "You can either go left, right, up, or down, if the bounds allow it"
         # Find the 0-tile's position
-        for rowNumber, rowArray in enumerate(A.state):
+        for rowNumber, rowArray in enumerate(A):
             for colNumber, blockValue in enumerate(rowArray):
                 if blockValue == 0:
                     zeroRow = rowNumber
@@ -113,4 +119,9 @@ class EightTileProblem(GraphProblem):
     def __repr__(self):
         """ TODO: Change to be purdy. """
         return "<Node %s>" % (self.state,)
+
+sInit = [[1,2,3],[4,5,8],[7,0,6]]
+nStart = Node(sInit) 
+gpEightTile = EightTileProblem(sInit, solutionState, nStart)
+breadth_first_tree_search(gpEightTile).solution()
         
