@@ -19,7 +19,7 @@ class Problem(object):
         """The constructor specifies the initial state, and possibly a goal
         state, if there is a unique goal.  Your subclass's constructor can add
         other arguments."""
-        self.initial = initial; self.goal = goal
+        self.initial = initial; self.goal = goal; self.enableOutput = False
 
     def actions(self, state):
         """Return the actions that can be executed in the given
@@ -76,6 +76,10 @@ class Node:
 
     def expand(self, problem):
         "List the nodes reachable in one step from this node."
+
+	if hasattr(problem, 'enableOutput') and problem.enableOutput == True:
+		print "Expanding node", self
+
         return [self.child_node(problem, action)
                 for action in problem.actions(self.state)]
 

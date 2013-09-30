@@ -39,26 +39,21 @@ left = "left"
 right = "right"
 
 # Output flag
-enableOutput = False
+enableOutput = True
+
+utils.enableOutput = enableOutput
 
 # Nested lists converted back to nested tuples (mutating states in result() function)
 def convertStateLtoT(myNestedList):
     returnMe = []
     for row in myNestedList:
         returnMe.append(tuple(row))
-
-    res = tuple( returnMe )
-
-    # Output state?
-    if enableOutput:
-        print res
-
-    return res
+    return tuple( returnMe )
 
 
 class EightTileProblem(GraphProblem):
     def __init__(self, initialState, goalState, startNode):
-        Problem.__init__(self, initialState, goalState)
+        GraphProblem.__init__(self, initialState, goalState, startNode)
         self.graph = startNode
 	self.enableOutput = enableOutput
         
