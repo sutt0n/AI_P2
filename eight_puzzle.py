@@ -30,7 +30,7 @@ goalPositions = {
 
 # Define the actions you can take on the 0-tile
 up = "up"
-down = "up"
+down = "down"
 left = "left"
 right = "right"
 
@@ -61,6 +61,8 @@ class EightTileProblem(GraphProblem):
                     zeroRow = rowNumber
                     zeroCol = colNumber
                     break
+                #else:
+                #    print "checking node block [", rowNumber, ",", colNumber, "] with value ", blockValue
         results = []
         # Swap whichever vertical neighbors you can
         if zeroRow == 0: # swap with the one beneath it            
@@ -80,6 +82,13 @@ class EightTileProblem(GraphProblem):
             results.append(left);
             results.append(right);
         
+        # DEBUG
+        """
+        print "possible results for ", A
+        for result in results:
+            print result, " "
+        print ""
+        """
         return results
     
     # The result of swapping the 0-tile with another tile is a new state
@@ -120,8 +129,7 @@ class EightTileProblem(GraphProblem):
         """ TODO: Change to be purdy. """
         return "<Node %s>" % (self.state,)
 
-sInit = [[1,2,3],[4,5,8],[7,0,6]]
+sInit = [[1,2,3],[0,5,6],[4,7,8]]
 nStart = Node(sInit) 
 gpEightTile = EightTileProblem(sInit, solutionState, nStart)
-breadth_first_tree_search(gpEightTile).solution()
-        
+print breadth_first_tree_search(gpEightTile).solution()
